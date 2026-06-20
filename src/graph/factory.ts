@@ -7,5 +7,3 @@ export function buildGraph() {
 export const graph = async () => {
   return buildGraph();
 };
-
-export default graph;
