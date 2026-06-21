@@ -21,7 +21,7 @@ export const config: ModelConfig = {
   httpReferer: '',
   xTitle: 'IA Devs - Prompt Chaining Article Generator',
   models: [
-    'openai/gpt-oss-120b:free',
+    'openrouter/owl-alpha',
   ],
   provider: {
     sort: {
