@@ -13,7 +13,6 @@ export class OpenRouterService {
             apiKey: this.config.apiKey,
             modelName: this.config.models.at(0), // For simplicity, using the first model. Can implement routing logic based on config.provider.sort if needed.
             temperature: this.config.temperature,
-            callbacks: [],
             configuration: {
                 baseURL: 'https://openrouter.ai/api/v1',
                 defaultHeaders: {
@@ -24,7 +23,7 @@ export class OpenRouterService {
 
             // conf from open router (smart model)
             modelKwargs: {
-                model: this.config.models.at(0),
+                models: this.config.models,
                 provider: this.config.provider
             }
         })
@@ -34,17 +33,29 @@ export class OpenRouterService {
         systemPrompt: string,
         userPrompt: string,
         schema: z.ZodSchema<T>) {
-        const agent = createAgent({
-            model: this.llmClient,
-            tools: [],
-            responseFormat: providerStrategy(schema),
-        });
-        const messages = [
-            new SystemMessage(systemPrompt),
-            new HumanMessage(userPrompt),
-        ];
-        const data = await agent.invoke({ messages })
-        };
-        1;
-
+        try {
+            const agent = createAgent({
+                model: this.llmClient,
+                tools: [],
+                responseFormat: providerStrategy(schema),
+            });
+            const messages = [
+                new SystemMessage(systemPrompt),
+                new HumanMessage(userPrompt),
+            ];
+            const data = await agent.invoke({ messages })
+            return {
+                success: true,
+                data: data.structuredResponse
+            };
+        } catch (error) {
+            console.error('❌ Error in OpenRouterService.generateStructured:', error);
+            return {
+                success: false,
+                error: error instanceof Error ?
+                    error.message :
+                    String(error),
+            };
+        }
+    }
 }

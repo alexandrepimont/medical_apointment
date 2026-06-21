@@ -21,7 +21,7 @@ export const config: ModelConfig = {
   httpReferer: '',
   xTitle: 'IA Devs - Prompt Chaining Article Generator',
   models: [
-    'nvidia/nemotron-3.5-content-safety:free',
+    'openai/gpt-oss-120b:free',
   ],
   provider: {
     sort: {
